@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Packets</h2>
+<div class="packets">
+    <ol id="mon"></ol>
+</div>
+<script type="text/javascript" charset="utf-8">
+    (function() {
+
+        const favicon = document.getElementById('favicon');
+
+        const mon = document.querySelector('#mon');
+        const socket = io();
+
+        const cv = document.createElement('canvas');
+        const ct = cv.getContext('2d');
+
+        let timeout;
+
+        cv.width = 16
+        cv.height = 16
+
+        function changeFav(color = '#f00') {
+            ct.fillStyle = color; 
+            ct.beginPath();
+            ct.arc(8,8,7,0,Math.PI * 2);
+            ct.fill();
+
+            favicon.href = cv.toDataURL('image/png');
+        }
+
+        function stateDisconnected() {
+            changeFav('#f00');
+        }
+
+        function stateReady() {
+            changeFav('#0f0');
+        }
+
+        function stateMsg() {
+            changeFav('#0ff');
+        }
+
+        stateDisconnected();
+
+        socket.on('connect', function() {
+            stateReady();
+        });
+
+        socket.on('message', function(msg) {
+            let msgP = document.createElement('li')
+            msgP.innerText = `${msg.src_mac} > ${msg.dst_mac} ${msg.src_ip}:${msg.src_port} > ${msg.dst_ip}:${msg.dst_port}`;
+
+            stateMsg();
+            window.clearTimeout(timeout);
+            timeout = window.setTimeout(stateReady, 1000);
+
+            mon.appendChild(msgP)
+        });
+
+        socket.on('disconnect', function(){
+            stateDisconnected();
+        })
+    })();
+</script>
+{% endblock %}

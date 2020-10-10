@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Netmon</title>
+        <link id="favicon" rel="icon" href="favicon.png" type="image/png" sizes="16x16">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+        <style>
+body {margin:0 ; background-color: #eaeaea;}
+main {padding: 16px;}
+.header {
+    display: flex;
+    background: #fff;
+    padding:16px;
+}
+    h1 {margin:0;}
+    h1,h2,h3,h4,h5 {line-height: 1.1;  font-weight: normal; color: #268;}
+    .packets{background: #fff; padding: 16px;}
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <h1>Netmon</h1> 
+        </header>
+        <main>
+            {% block content %}{% endblock %} 
+        </main>
+    </body>
+</html>
